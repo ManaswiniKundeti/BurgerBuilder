@@ -1,32 +1,40 @@
 import * as actionTypes from '../actions/actionTypes';
+import { updateObject } from '../utility';
 
 const initialState = {
     orders : [],
-    loading : false
+    loading : false,
+    purchased : false
+};
+
+//we can slim the switch case by, adding another method to store the body of the PURCHASE_INIT for ex.
+const purchaseInit = (state,action) => {
+    return updateObject(state,{purchased : false}); //using utility func-updateObject
 };
 
 const reducer = (state = initialState, action) => {
     switch(action.type) {
+      case actionTypes.PURCHASE_INIT : return purchaseInit(state,action);
+      case actionTypes.PURCHASE_BURGER_START :
+          return updateObject(state,{loading : true});
       case actionTypes.PURCHASE_BURGER_SUCCESS :
-          return {
-            ...state,
-            loading : true
-          };
-      case actionTypes.PURCHASE_BURGER_SUCCESS :
-        const newOrder = {
-          ...action.orderData,
-          id : action.orderId
-        }
-          return {
-              ...state,
-              loading : false,
-              orders :  state.orders.concat(newOrder)
-          };
+        const newOrder = updateObject(action.orderData,{id : action.orderId});
+          return updateObject(state,{
+            loading : false,
+            purchased : true,
+            orders :  state.orders.concat(newOrder)
+          });
       case actionTypes.PURCHASE_BURGER_FAIL :
-          return {
-            ...state,
+          return updateObject(state,{loading : false});
+      case actionTypes.FETCH_ORDERS_START :
+          return updateObject(state,{loading : true});
+      case actionTypes.FETCH_ORDERS_SUCCESS :
+          return updateObject(state,{
+            orders : action.orders,
             loading : false
-          };
+          });
+      case actionTypes.FETCH_ORDERS_FAIL :
+          return updateObject(state,{loading : false});
       default :
           return state;
     }
