@@ -4,8 +4,9 @@ import { updateObject } from '../../shared/utility';
 const initialState = {
   token : null,
   userId : null,
-  eror : null,
-  loading : false
+  error : null,
+  loading : false,
+  authRedirectPath : '/'
 };
 
 const authStart = (state,action) => {
