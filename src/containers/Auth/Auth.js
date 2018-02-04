@@ -51,8 +51,7 @@ class Auth extends Component {
   }
 
   //checking for validity -- moved to utility file
-
-
+  
   inputChangedHandler = ( event, controlName ) => {
         const updatedControls = updateObject( this.state.controls, {
             [controlName]: updateObject( this.state.controls[controlName], {
